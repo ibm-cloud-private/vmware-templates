@@ -135,7 +135,7 @@
     {
       "name": "vcpu",
       "description": "Number of Virtual CPU for the Virtual Machine",
-      "default": 1,
+      "default": 2,
       "type": "string",
       "required": true,
       "secured": false,
