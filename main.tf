@@ -1,49 +1,53 @@
 ##################### Variables ###############################
 
 variable "name" {
-	description = "Name of the Virtual Machine"
+    description = "Name of the Virtual Machine"
+    default = "partha_icp"
 }
 
 variable "datacenter" {
-	description = "Target vSphere datacenter for Virtual Machine creation"
+    description = "Target vSphere datacenter for Virtual Machine creation"
+    default = "Rack-8283_1000167"
 }
 
 variable "vcpu" {
-	description = "Number of Virtual CPU for the Virtual Machine"
-	default = 1
+    description = "Number of Virtual CPU for the Virtual Machine"
+    default = 4
 }
 
 variable "memory" {
-	description = "Memory for Virtual Machine in MBs"
-	default = 1024
+    description = "Memory for Virtual Machine in MBs"
+    default = 16384
 }
 
 variable "cluster" {
-	description = "Target vSphere Cluster to host the Virtual Machine"
+    description = "Target vSphere Cluster to host the Virtual Machine"
+    default = "Shared"
 }
 
 variable "network_label" {
-	description = "vSphere Port Group or Network label for Virtual Machine's vNIC" 
+    description = "vSphere Port Group or Network label for Virtual Machine's vNIC"
+    default = "840"
 }
 
 variable "ipv4_address" {
-	description = "IPv4 address for vNIC configuration"
+    description = "IPv4 address for vNIC configuration"
+    default = "9.37.194.182"
 }
 
 variable "ipv4_gateway" {
-	description = "IPv4 gateway for vNIC configuration"
+    description = "IPv4 gateway for vNIC configuration"
+    default = "9.37.194.1"
 }
 
 variable "ipv4_prefix_length" {
-	description = "IPv4 Prefix length for vNIC configuration"
-}
-
-variable "storage" {
-	description = "Data store or storage cluster name for target VMs disks"
+    description = "IPv4 Prefix length for vNIC configuration"
+    default = "24"
 }
 
 variable "vm_template" {
-	description = "Source VM or Template label for cloning"
+    description = "Source VM or Template label for cloning"
+    default = "CAM--ManageFromTemplate/Ubuntu-IcpAos-InstallReady"
 }
 
 variable "allow_selfsigned_cert" {
@@ -54,9 +58,12 @@ variable "allow_selfsigned_cert" {
 ############### Optinal settings in provider ##########
 provider "vsphere" {
     version = "~> 1.1"
+    user = "Administrator"
+    password = "7ecAdFC4"
+    vsphere_server = "9.42.121.180"
     allow_unverified_ssl = "${var.allow_selfsigned_cert}"
 }
- 
+
 data "vsphere_datacenter" "datacenter" {
   name = "${var.datacenter}"
 }
@@ -83,13 +90,13 @@ data "vsphere_network" "network" {
 ################## Resources ###############################
 
 #
-# Create VM with single vnic on a network label by cloning 
+# Create VM with single vnic on a network label by cloning
 #
 resource "vsphere_virtual_machine" "vm_1" {
   name   = "${var.name}"
   resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
   datastore_id     = "${data.vsphere_datastore.datastore.id}"
-  
+
   num_cpus   = "${var.vcpu}"
   memory = "${var.memory}"
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
@@ -98,14 +105,23 @@ resource "vsphere_virtual_machine" "vm_1" {
       network_id = "${data.vsphere_network.network.id}"
   }
 
-  disk {
-    name = "${var.name}.vmdk"
-    size = "${data.vsphere_virtual_machine.template.disks.0.size}"
-    eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
-    thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
-  }
-
-  clone {
+  disk = [
+    {
+      name = "${var.name}.vmdk"
+      size = "${data.vsphere_virtual_machine.template.disks.0.size}"
+      eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
+      thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
+      unit_number = 0
+    },
+    {
+      name = "${var.name}_1.vmdk"
+      size = "${data.vsphere_virtual_machine.template.disks.1.size}"
+      eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.1.eagerly_scrub}"
+      thin_provisioned = "${data.vsphere_virtual_machine.template.disks.1.thin_provisioned}"
+      unit_number = 1
+    }
+  ]
+    clone {
     template_uuid = "${data.vsphere_virtual_machine.template.id}"
 
     customize {
