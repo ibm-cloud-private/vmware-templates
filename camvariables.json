@@ -348,7 +348,7 @@
     {
       "name": "vm_1_resource_pool",
       "type": "string",
-      "default": "${vSphereVM.resouce_pool}",
+      "default": "${vSphereVM.resource_pool}",
       "description": "Target vSphere Resource Pool to host the virtual machine",
       "hidden": false,
       "label": "vSphere Resource Pool - vm_1",
