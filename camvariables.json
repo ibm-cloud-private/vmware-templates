@@ -125,9 +125,8 @@
     {
       "name": "vm_1_root_disk_size",
       "type": "string",
-      "default": "${vSphereVM.root_disk_disk_size}",
+      "default": "${vSphereVM.root_disk_size}",
       "description": "Size of template disk volume. Should be equal to template's disk size",
-      "default": "25",
       "hidden": false,
       "label": "Root Disk Size - vm_1",
       "secured": false,
