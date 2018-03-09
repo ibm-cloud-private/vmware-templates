@@ -241,7 +241,6 @@
       "type": "string",
       "default": "${vSphereVM.memory}",
       "description": "Memory assigned to the virtual machine in megabytes. This value is required to be an increment of 1024",
-      "default": "1024",
       "hidden": false,
       "label": "Virtual Machine Memory - vm_1",
       "secured": false,
