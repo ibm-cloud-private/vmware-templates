@@ -193,3 +193,8 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
 
 }
+
+## output
+output "Public IP Address" {
+  value = "${vsphere_virtual_machine.vm_1.network_interface.ipv4_address}"
+}
