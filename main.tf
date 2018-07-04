@@ -57,9 +57,9 @@ provider "vsphere" {
     allow_unverified_ssl = "${var.allow_selfsigned_cert}"
 }
  
-data "vsphere_datacenter" "datacenter" {
-  name = "${var.datacenter}"
-}
+#data "vsphere_datacenter" "datacenter" {
+#  name = "${var.datacenter}"
+#}
 
 ################## Resources ###############################
 

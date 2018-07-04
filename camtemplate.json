@@ -1,6 +1,6 @@
 {
-  "name": "Single Virtual Machine",
-  "description": "Create Virtual Machine with single vnic",
+  "name": "My Single Virtual Machine",
+  "description": "My Create Virtual Machine with single vnic",
   "type": "prebuilt",
   "version": "1.0.0.0",
   "manifest": {
@@ -14,7 +14,7 @@
     }
   },
   "metadata": {
-      "displayName": "Single Virtual Machine",
-      "longDescription": "Create Virtual Machine with single vnic on a network label by cloning"
+      "displayName": "My Single Virtual Machine",
+      "longDescription": "My Create Virtual Machine with single vnic on a network label by cloning"
   }
 }
